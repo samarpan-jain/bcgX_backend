@@ -15,7 +15,3 @@ class UserRes(BaseModel):
 class UserDTO(UserBase):
     class Config:
         from_attributes = True
-
-class LoginDetails(BaseModel):
-    email: EmailStr
-    password: str

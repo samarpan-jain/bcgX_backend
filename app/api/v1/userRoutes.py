@@ -4,10 +4,11 @@ from sqlalchemy.orm import Session
 from models.users import User
 from dtos.users import UserRes
 from utils.apiResponse import APIResponse
+from typing import List
 
 userRoutes = APIRouter(tags=["Users"])
 
-@userRoutes.get("/", response_model=list[UserRes])
+@userRoutes.get("/", response_model=List[UserRes])
 def get_all_users(db: Session = Depends(get_db)):
     try:
         db_users = db.query(User).all()

@@ -2,19 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.database import get_db
 from utils.encryptPass import hash_password, verify_password
 from utils.apiResponse import APIResponse
-from dtos.users import UserDTO, LoginDetails
+from dtos.users import UserDTO
 from models.users import User
 from sqlalchemy.orm import Session
 
 authRoutes = APIRouter(tags=["Authentication"])
 
-@authRoutes.post("/login")
-def login(loginDetails: LoginDetails, db: Session = Depends(get_db)):
+@authRoutes.get("/login/{email}/{password}")
+def login(email: str, password: str, db: Session = Depends(get_db)):
     try:
-        user = db.query(User).filter(User.email == loginDetails.email).first()
+        user = db.query(User).filter(User.email == email).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
-        if verify_password(loginDetails.password, user.password) is False:
+        if verify_password(password, user.password) is False:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         return APIResponse.generateSuccess(message="Login successful")
     except Exception as e:
