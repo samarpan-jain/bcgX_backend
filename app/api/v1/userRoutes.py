@@ -8,7 +8,7 @@ from typing import List
 
 userRoutes = APIRouter(tags=["Users"])
 
-@userRoutes.get("/", response_model=List[UserRes])
+@userRoutes.get("/", response_model=List[UserRes], status_code=200)
 def get_all_users(db: Session = Depends(get_db)):
     try:
         db_users = db.query(User).all()
@@ -17,7 +17,7 @@ def get_all_users(db: Session = Depends(get_db)):
         print("Error retrieving users:", e)
         return APIResponse.generateError(status_code=400, message="Failed to retrieve users")
 
-@userRoutes.get("/{user_id}", response_model=UserRes)
+@userRoutes.get("/{user_id}", response_model=UserRes, status_code=200)
 def get_user_by_id(user_id: str, db: Session = Depends(get_db)):
     try:
         user = db.query(User).filter(User.id == user_id).first()

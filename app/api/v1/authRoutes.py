@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 authRoutes = APIRouter(tags=["Authentication"])
 
-@authRoutes.get("/login/{email}/{password}")
+@authRoutes.get("/login/{email}/{password}", status_code=200)
 def login(email: str, password: str, db: Session = Depends(get_db)):
     try:
         user = db.query(User).filter(User.email == email).first()
@@ -21,7 +21,7 @@ def login(email: str, password: str, db: Session = Depends(get_db)):
         print("Error during login:", e)
         raise HTTPException(status_code=400, detail="Login failed")
 
-@authRoutes.post("/register")
+@authRoutes.post("/register", status_code=200)
 def register(userDTO: UserDTO, db: Session = Depends(get_db)):
     try:
         if(db.query(User).filter(User.email == userDTO.email).first()):
