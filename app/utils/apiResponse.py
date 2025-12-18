@@ -13,8 +13,9 @@ class APIResponse:
         raise HTTPException(status_code=status_code, detail=response)
     
     @staticmethod
-    def generateSuccess(message: str, data: dict|None = None) -> dict:
+    def generateSuccess(status_code: int, message: str, data: dict|None = None) -> dict:
         response = {
+            "status_code": status_code,
             "message": message,
         }
         if data is not None:

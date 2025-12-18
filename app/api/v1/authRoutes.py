@@ -16,7 +16,7 @@ def login(email: str, password: str, db: Session = Depends(get_db)):
             raise HTTPException(status_code=404, detail="User not found")
         if verify_password(password, user.password) is False:
             raise HTTPException(status_code=401, detail="Invalid credentials")
-        return APIResponse.generateSuccess(message="Login successful")
+        return APIResponse.generateSuccess(status_code=200,message="Login successful")
     except Exception as e:
         print("Error during login:", e)
         raise HTTPException(status_code=400, detail="Login failed")
@@ -30,7 +30,7 @@ def register(userDTO: UserDTO, db: Session = Depends(get_db)):
         user=User(**userDTO.model_dump())
         db.add(user)
         db.commit()
-        return APIResponse.generateSuccess(message="User registered successfully")
+        return APIResponse.generateSuccess(status_code=200,message="User registered successfully")
     except Exception as e:
         print("Error registering user:", e)
         return APIResponse.generateError(status_code=400, message="Registration failed")
